@@ -56,14 +56,22 @@ const courseProgressSchema = new mongoose.Schema({
     toObject:{virtuals:true}
 })
 
+// calculate completion percentage
+courseProgressSchema.pre("save", function (next) {
+    if(this.lecturesProgress.length>0){
+         const completedLectures = this.lecturesProgress.filter(lp=>lp.isCompleted).length
+         this.completionPercentage = Math.round( (completedLectures/this.lecturesProgress.length) * 100 )
+         this.isCompleted = this.completionPercentage === 100
+    }
+    next()
+})
 
 
 //update last accessed 
-
 courseProgressSchema.methods.updateLastAccessed = function(){
     this.lastAccessed = Date.now()
     return this.save({ validateBeforeSave : false })
 }
 
-
+export const CourseProgress = mongoose.model("CourseProgress", courseProgressSchema)
 
