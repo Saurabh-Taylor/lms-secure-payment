@@ -7,6 +7,7 @@ import hpp from "hpp";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import healthRoute from "./routes/health.route.js";
+import userRoute from "./routes/user.route.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -69,6 +70,7 @@ app.use((err,req,res,next)=>{
 
 //API ROUTES
 app.use("/api/v1/healthcheck" , healthRoute)
+app.use("/api/v1/user" , userRoute)
 
 // it should be always at bottom
 // 404 handler
